@@ -1,0 +1,55 @@
+# =========================================================================
+# Gitignore personalizado para Ruido-Message
+# =========================================================================
+
+# --- Sistema Operativo y Editores ---
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*.bak
+*.log
+
+# --- Python (FastAPI, Virtual Envs y Dependencias) ---
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv/
+env/
+venv/
+ENV/
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+*.egg-info/
+
+# --- Docker ---
+.dockerignore
+# Descomentar si usas un docker-compose local con secretos:
+# docker-compose.override.yml
+
+# --- MATLAB (Archivos Temporales y de Sesión) ---
+*.asv
+*.mex*
+*.mat
+slprj/
+
+# --- MATLAB Compiler SDK (Python Packages Output) ---
+# Permitimos la carpeta 'build' para que Docker la encuentre en el repositorio
+!**/PythonPackage1/output/build/
+
+# Pero seguimos ignorando instaladores pesados y logs de despliegue
+**/PythonPackage1/output/package/
+**/mccExcludedFiles.log
+**/deploymentLog.html
+*.install
+
+# --- NOTA SOBRE MATLAB PROJECTS ---
+# NO se debe ignorar la carpeta 'resources/project/' ya que contiene 
+# la definición y ruta de los MATLAB Projects compartidos.
