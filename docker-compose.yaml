@@ -1,0 +1,21 @@
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_ENCRYPT_API=http://encoder:8000
+      - NEXT_PUBLIC_DECRYPT_API=http://decoder:8001
+    depends_on:
+      - encoder
+      - decoder
+
+  encoder:
+    build: ./encriptar_compresion
+    ports:
+      - "8000:8000"
+
+  decoder:
+    build: ./descencriptar_descompresion
+    ports:
+      - "8001:8001"
