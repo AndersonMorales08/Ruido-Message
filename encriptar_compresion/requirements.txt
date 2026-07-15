@@ -1,2 +1,4 @@
 fastapi==0.139.0
 uvicorn
+pydub
+python-multipart
