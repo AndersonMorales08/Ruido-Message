@@ -5,13 +5,11 @@ import {
   UploadCloud, 
   Lock, 
   Unlock,
-  FileAudio, 
-  Download, 
+  FileAudio,
   Key, 
   FileJson, 
   ShieldCheck, 
-  Eye, 
-  FolderOpen,
+  Eye,
   RefreshCw
 } from "lucide-react";
 
@@ -77,15 +75,34 @@ export default function AudioSteganography() {
   };
 
   // Simulación: Revelar Mensaje (Decode)
-  const handleProcessDecode = () => {
+  const handleProcessDecode = async () => {
+    const  formData = new FormData();
+
     if (!stegoAudio || !privateKey || !huffmanJson) return;
     setIsDecoding(true);
+
+    formData.append('audio_file', stegoAudio);
+    formData.append('pem_file', privateKey);
+    formData.append('huffman_file', huffmanJson);
+
+    try {
+      const res = await fetch(DECRYPT_API + '/api/decrypt_decompress', {
+        method: 'POST',
+        // headers: { 'Content-Type': 'application/json' },
+        body: formData
+      });
+      const data = await res.json();
+      setRecoveredMessage(data?.result || "Mensaje recuperado simulado: ¡Hola, mundo!")
+      // setEncryptedData(data.result); // Ajusta la key según tu FastAPI
+    } catch (error) {
+      console.error('Error al encriptar:', error);
+      // setEncryptedData('Error de conexión con el contenedor de encriptación.');
+    }
 
     // Aquí iría tu lógica real: Extraer LSB -> Descifrar RSA -> Descomprimir Huffman
     setTimeout(() => {
       setIsDecoding(false);
       setIsDecoded(true);
-      setRecoveredMessage("¡Felicidades! Este es el mensaje secreto que estaba oculto de forma segura dentro del archivo de audio.");
     }, 2500);
   };
 

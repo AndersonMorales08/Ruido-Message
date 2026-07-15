@@ -20,7 +20,7 @@ function messagge_recovered = descencriptar_descompresion(secret, ky_pr, n, codi
     claves_num = cell(1, length(claves));
     for idx = 1:length(claves)
         % disp(claves{idx});
-        claves_num{idx} = str2num(claves{idx}(2:end)); % Convierte 65 en '65'
+        claves_num{idx} = str2num(claves{idx}(2:end)); 
     end
     
     % Creamos un mapa temporal con llaves de tipo texto (char)
