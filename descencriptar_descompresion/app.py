@@ -122,6 +122,10 @@ async def decrypt_decompress(audio_file: UploadFile = File(...), pem_file: Uploa
 
         print(f"Resultado de descifrado y descompresión: {result}")
 
+        return {
+            "status": "success",
+            "result": result
+        }
     except Exception as e:
         print("--- ERROR DETECTADO EN LA EJECUCIÓN DE MATLAB ---")
         traceback.print_exc() 
