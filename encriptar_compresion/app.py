@@ -22,6 +22,7 @@ async def lifespan(app: FastAPI):
         matlab_api.terminate()
     print("Servicio de encriptación y compresión apagado.")
 
+
 app = FastAPI(title="MATLAB Docker API", lifespan=lifespan)
 
 # 2. Configurar los orígenes permitidos
@@ -44,7 +45,7 @@ try:
     print("Iniciando MATLAB Runtime en segundo plano...")
     matlab_api = Matlab_EC.initialize()
     print("MATLAB Runtime cargado correctamente.")
-
+    
 except Exception as e:
     print(f"Error crítico al inicializar el entorno de MATLAB: {e}")
 
