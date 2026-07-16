@@ -1,4 +1,4 @@
-function messagge_recovered = descencriptar_descompresion(secret, ky_pr, n, codigos, message, ruta_entrada)
+function messagge_recovered = descencriptar_descompresion(secret, ky_pr, n, codigos, len_message, ruta_entrada)
     [audio, Fs] = audioread(ruta_entrada);
     
     audioEntero = int16(audio * 32767);
@@ -32,7 +32,7 @@ function messagge_recovered = descencriptar_descompresion(secret, ky_pr, n, codi
         recovered_ascii_comprimido(i) = descencriptacion_rsa.descifrado_rsa(secret(i), ky_pr, n);
     end
     
-    recovered_ascii = descompresion_huffman.huffmanDescomprimir(recovered_ascii_comprimido, codigos, numel(double(message)))
+    recovered_ascii = descompresion_huffman.huffmanDescomprimir(recovered_ascii_comprimido, codigos, len_message)
     
     messagge_recovered = char(recovered_ascii);
 

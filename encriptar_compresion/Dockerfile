@@ -21,6 +21,8 @@ ENV LD_LIBRARY_PATH=/opt/matlab/matlabruntime/R2025b/runtime/glnxa64:\
 /opt/matlabruntime/v252/runtime/glnxa64:\
 /usr/local/MATLAB/MATLAB_Runtime/v252/runtime/glnxa64
 
+ENV PYTHONUNBUFFERED=1
+
 ENV AGREE_TO_MATLAB_RUNTIME_LICENSE=YES
 # 3. Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /app

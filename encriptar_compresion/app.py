@@ -95,7 +95,7 @@ async def encrypt_compress(audio_file: UploadFile = File(...), text: str = Form(
                 archivo_pem += f"\n-----BEGIN PUBLIC KEY-----\n{ky_pub}\n-----END PUBLIC KEY-----\n"
                 archivo_pem += f"\n-----BEGIN MODULUS-----\n{n}\n-----END MODULUS-----\n"
                 archivo_pem += f"\n-----BEGIN SECRET-----\n{secret}\n-----END SECRET-----\n"
-                archivo_pem += f"\n-----BEGIN ORIGINAL MESSAGE-----\n{text}\n-----END ORIGINAL MESSAGE-----\n"
+                archivo_pem += f"\n-----BEGIN LEN MESSAGE-----\n{len(text)}\n-----END LEN MESSAGE-----\n"
 
                 zip_file.writestr("keys_and_secret.pem", archivo_pem)
 
