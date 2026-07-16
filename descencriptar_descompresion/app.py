@@ -122,20 +122,10 @@ async def decrypt_decompress(audio_file: UploadFile = File(...), pem_file: Uploa
 
         print(f"Resultado de descifrado y descompresión: {result}")
 
-    try:
-        secret_m = matlab.double([payload["secret"]])
-        codigos_simbolos_m = matlab.double([payload["codigos_simbolos"]])
-        codigos_valores = payload["codigos_valores"]  # lista de strings
-
-        mensaje_recuperado = matlab_api.descencriptar_descompresion(
-            secret_m,
-            matlab.double(llave_privada),
-            matlab.double(payload["n"]),
-            codigos_simbolos_m,
-            codigos_valores,
-            matlab.double(payload["longitud_original"]),
-            nargout=1,
-        )
+        return {
+            "status": "success",
+            "result": result
+        }
     except Exception as e:
         print("--- ERROR DETECTADO EN LA EJECUCIÓN DE MATLAB ---")
         traceback.print_exc() 
