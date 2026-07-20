@@ -1,4 +1,4 @@
-function [secret, codigos, ky_pub, ky_pr, n] = encriptar_compresion(mensaje, ruta_entrada, ruta_salida)
+function [len_secret, codigos, ky_pub, ky_pr, n] = encriptar_compresion(mensaje, ruta_entrada, ruta_salida)
 
     ascii_message = double(mensaje);
 
@@ -31,6 +31,8 @@ function [secret, codigos, ky_pub, ky_pr, n] = encriptar_compresion(mensaje, rut
     for i = 1:numel(secret)
         audioEsteoUnsigned(i) = bitset(audioEsteoUnsigned(i), 1, secret(i));
     end
+
+    len_secret = numel(secret);
      
     audioEstego = int16(int32(audioEsteoUnsigned) - 32768); % volver a rango con signo
     audioEstegoFloat = double(audioEstego) / 32767;

@@ -80,8 +80,8 @@ async def encrypt_compress(audio_file: UploadFile = File(...), text: str = Form(
         try:
             zip_buffer = io.BytesIO()
 
-            secret, codigos, ky_pub, ky_pr, n = matlab_api.encriptar_compresion(text, wav_converted_path, wav_output_path, nargout=5)
-            secret = secret[0] if isinstance(secret, list) else secret
+            len_secret, codigos, ky_pub, ky_pr, n = matlab_api.encriptar_compresion(text, wav_converted_path, wav_output_path, nargout=5)
+            len_secret = int(len_secret)
             codigos = json.loads(codigos)
             ky_pub = int(ky_pub)
             ky_pr = int(ky_pr)
@@ -94,7 +94,7 @@ async def encrypt_compress(audio_file: UploadFile = File(...), text: str = Form(
                 archivo_pem = f"-----BEGIN PRIVATE KEY-----\n{ky_pr}\n-----END PRIVATE KEY-----\n"
                 archivo_pem += f"\n-----BEGIN PUBLIC KEY-----\n{ky_pub}\n-----END PUBLIC KEY-----\n"
                 archivo_pem += f"\n-----BEGIN MODULUS-----\n{n}\n-----END MODULUS-----\n"
-                archivo_pem += f"\n-----BEGIN SECRET-----\n{secret}\n-----END SECRET-----\n"
+                archivo_pem += f"\n-----BEGIN LEN SECRET-----\n{len_secret}\n-----END LEN SECRET-----\n"
                 archivo_pem += f"\n-----BEGIN LEN MESSAGE-----\n{len(text)}\n-----END LEN MESSAGE-----\n"
 
                 zip_file.writestr("keys_and_secret.pem", archivo_pem)
@@ -104,7 +104,7 @@ async def encrypt_compress(audio_file: UploadFile = File(...), text: str = Form(
             zip_buffer.seek(0)
                             
 
-            result = str(secret) + "\n" + str(codigos) + "\n" + str(ky_pub) + "\n" + str(ky_pr) + "\n" + str(n)
+            result = str(len_secret) + "\n" + str(codigos) + "\n" + str(ky_pub) + "\n" + str(ky_pr) + "\n" + str(n)
             print(f"Resultado de MATLAB: {result}")
         
             # return {

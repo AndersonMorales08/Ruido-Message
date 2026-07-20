@@ -1,4 +1,4 @@
-function messagge_recovered = descencriptar_descompresion(secret, ky_pr, n, codigos, len_message, ruta_entrada)
+function messagge_recovered = descencriptar_descompresion(len_secret, ky_pr, n, codigos, len_message, ruta_entrada)
     [audio, Fs] = audioread(ruta_entrada);
     
     audioEntero = int16(audio * 32767);
@@ -6,9 +6,9 @@ function messagge_recovered = descencriptar_descompresion(secret, ky_pr, n, codi
 
     audioEsteoUnsigned = audioUnsigned;
 
-    bitsExtraidos = zeros(1, numel(secret));
+    bitsExtraidos = zeros(1, len_secret);
     
-    for i = 1:numel(secret)
+    for i = 1:len_secret
         bitsExtraidos(i) = bitget(audioEsteoUnsigned(i), 1);
     end
 
@@ -27,9 +27,9 @@ function messagge_recovered = descencriptar_descompresion(secret, ky_pr, n, codi
     codigos = containers.Map(claves_num, valores);
     
 
-    recovered_ascii_comprimido = zeros(1, length(secret));
-    for i = 1:length(secret)
-        recovered_ascii_comprimido(i) = descencriptacion_rsa.descifrado_rsa(secret(i), ky_pr, n);
+    recovered_ascii_comprimido = zeros(1, len_secret);
+    for i = 1:len_secret
+        recovered_ascii_comprimido(i) = descencriptacion_rsa.descifrado_rsa(bitsExtraidos(i), ky_pr, n);
     end
     
     recovered_ascii = descompresion_huffman.huffmanDescomprimir(recovered_ascii_comprimido, codigos, len_message)

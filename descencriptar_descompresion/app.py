@@ -72,7 +72,7 @@ async def decrypt_decompress(audio_file: UploadFile = File(...), pem_file: Uploa
                 continue
             elif "-----BEGIN PUBLIC KEY" in linea or "-----END PUBLIC KEY" in linea or \
                "-----BEGIN MODULUS" in linea or "-----END MODULUS" in linea or \
-               "-----BEGIN SECRET" in linea or "-----END SECRET" in linea or \
+               "-----BEGIN LEN SECRET" in linea or "-----END LEN SECRET" in linea or \
                "-----BEGIN LEN MESSAGE" in linea or "-----END LEN MESSAGE" in linea or \
                "-----BEGIN PRIVATE KEY" in linea or "-----END PRIVATE KEY" in linea:
                 continue
@@ -84,16 +84,13 @@ async def decrypt_decompress(audio_file: UploadFile = File(...), pem_file: Uploa
                     datos_pem["PUBLIC KEY"] = float(linea)
                 elif "MODULUS" not in datos_pem:
                     datos_pem["MODULUS"] = float(linea)
-                elif "SECRET" not in datos_pem:
-                    datos_pem["SECRET"] = linea
-                    datos_temp = datos_pem["SECRET"][1:-1]  # Eliminar los corchetes
-                    datos_temp = datos_temp[1:-1].split(",")  # Dividir por comas
-                    datos_pem["SECRET"] = matlab.double([float(dato.strip()) for dato in datos_temp])  # Convertir a float y luego a matlab.double
+                elif "LEN SECRET" not in datos_pem:
+                    datos_pem["LEN SECRET"] = matlab.double(int(linea))
                 elif "LEN MESSAGE" not in datos_pem:
                     datos_pem["LEN MESSAGE"] = matlab.double(int(linea))
 
 
-        required_keys = ["SECRET", "PUBLIC KEY", "MODULUS", "LEN MESSAGE"]
+        required_keys = ["LEN SECRET", "PUBLIC KEY", "MODULUS", "LEN MESSAGE"]
         missing_keys = [key for key in required_keys if key not in datos_pem]
         if missing_keys:
             raise ValueError(f"El archivo PEM no tiene una estructura válida. Faltan: {', '.join(missing_keys)}")
@@ -104,7 +101,7 @@ async def decrypt_decompress(audio_file: UploadFile = File(...), pem_file: Uploa
         huffman_data = json.loads(huffman_bytes)
 
         print(f"datos_pem['PRIVATE KEY']: {datos_pem['PRIVATE KEY']} Tipo: {type(datos_pem['PRIVATE KEY'])}")
-        print(f"datos_pem['SECRET']: {datos_pem['SECRET']} Tipo: {type(datos_pem['SECRET'])}")
+        print(f"datos_pem['LEN SECRET']: {datos_pem['LEN SECRET']} Tipo: {type(datos_pem['LEN SECRET'])}")
         print(f"datos_pem['PUBLIC KEY']: {datos_pem['PUBLIC KEY']} Tipo: {type(datos_pem['PUBLIC KEY'])}")
         print(f"datos_pem['MODULUS']: {datos_pem['MODULUS']} Tipo: {type(datos_pem['MODULUS'])}")
         print(f"datos_pem['LEN MESSAGE']: {datos_pem['LEN MESSAGE']} Tipo: {type(datos_pem['LEN MESSAGE'])}")
@@ -118,7 +115,7 @@ async def decrypt_decompress(audio_file: UploadFile = File(...), pem_file: Uploa
         
         print(json_huffman)
         
-        result = matlab_api.descencriptar_descompresion(datos_pem["SECRET"], datos_pem["PUBLIC KEY"], datos_pem["MODULUS"], json_huffman, datos_pem["LEN MESSAGE"], wav_input_path)
+        result = matlab_api.descencriptar_descompresion(datos_pem["LEN SECRET"], datos_pem["PUBLIC KEY"], datos_pem["MODULUS"], json_huffman, datos_pem["LEN MESSAGE"], wav_input_path)
 
         print(f"Resultado de descifrado y descompresión: {result}")
 
